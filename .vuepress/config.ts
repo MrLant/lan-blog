@@ -5,6 +5,7 @@ export default defineUserConfig({
   title: "lan blog",
   description: "Personal Learning Blog",
   base: '/lan-blog/',
+  head: [['link', { rel: 'shortcut icon', type: "image/x-icon", href: `/lan-blog/favicon.ico` }]],
   theme: recoTheme({
     style: "@vuepress-reco/style-default",
     logo: "/logo.png",
