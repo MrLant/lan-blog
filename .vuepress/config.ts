@@ -16,16 +16,7 @@ export default defineUserConfig({
     lastUpdatedText: "",
     // series 为原 sidebar
     series: {
-      "/docs/react/": [
-        {
-          text: "create-react-app",
-          children: ["base"],
-        },
-        {
-          text: "JSX语法与组件",
-          children: ["jsx"],
-        }
-      ],
+      "/docs/react/": ['base', 'jsx', 'component'],
     },
     navbar: [
       { text: "Home", link: "/" },

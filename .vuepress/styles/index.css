@@ -1,0 +1,9 @@
+.page-catalog-container {
+  width: 16rem !important;
+}
+
+@media (min-width: 1024px) {
+  .show-catalog .page-container, .show-catalog .page-404-wrapper {
+    padding-right: 16rem !important;
+}
+}
