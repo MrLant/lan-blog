@@ -17,7 +17,7 @@ export default defineUserConfig({
     lastUpdatedText: "",
     // series 为原 sidebar
     series: {
-      "/docs/react/": ['base', 'jsx', 'component'],
+      "/docs/react/": ['base', 'jsx', 'component', 'state-props'],
     },
     navbar: [
       { text: "Home", link: "/" },
