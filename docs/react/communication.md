@@ -143,3 +143,203 @@ export default class App extends Component {
 }
  ```
  ## 非父子组件间通信
+
+ ### 状态提升
+ React中的状态提升概括来说,就是将多个组件需要共享的状态提升到它们最近的父组件
+上.在父组件上改变这个状态然后通过props分发给子组件.
+```js
+import React, { Component } from 'react'
+import axios from 'axios'
+export default class APP extends Component {
+  state = {
+    filmList: [],
+    filmDetail: ''
+  }
+  componentDidMount() {
+    axios.get('/hot.json').then(res => {
+      this.setState({filmList: res.data})
+    })
+  }
+  render() {
+    return (
+      <div>
+        {this.state.filmList.map(item => 
+          <FilmItem {...item} key={item.id} getFilmDetail={(val) => {
+            this.setState({filmDetail: val})
+          }}/>
+        )}
+        <FilmDetail filmDetail={this.state.filmDetail}/>
+      </div>
+    )
+  }
+}
+
+class FilmItem extends Component {
+  render() {
+    const {nm, img, videoName} = this.props
+    return (
+      <div>
+        <h4 onClick={() => {
+          this.props.getFilmDetail(videoName)
+        }}>{nm}</h4>
+        <img src={img} alt={nm} width={200} height={200}/>
+      </div>
+    )
+  }
+}
+
+class FilmDetail extends Component {
+  render() {
+    return (
+      <div style={{position: 'fixed', top: '20px', left: '300px'}}>{this.props.filmDetail}</div>
+    )
+  }
+}
+```
+
+### 发布订阅模式
+```js
+import React, { Component } from 'react'
+import axios from 'axios'
+
+var bus = {
+  list: [],
+  subscribe(callback) {
+    this.list.push(callback)
+  },
+  publish(val) {
+    this.list.forEach(callback => {
+      callback && callback(val)
+    })
+  }
+}
+
+export default class APP extends Component {
+  state = {
+    filmList: [],
+  }
+  componentDidMount() {
+    axios.get('/hot.json').then(res => {
+      this.setState({filmList: res.data})
+    })
+  }
+  render() {
+    return (
+      <div>
+        {this.state.filmList.map(item => 
+          <FilmItem {...item} key={item.id} />
+        )}
+        <FilmDetail />
+      </div>
+    )
+  }
+}
+
+class FilmItem extends Component {
+  render() {
+    const {nm, img, videoName} = this.props
+    return (
+      <div>
+        <h4 onClick={() => {
+          bus.publish(videoName)
+        }}>{nm}</h4>
+        <img src={img} alt={nm} width={200} height={200}/>
+      </div>
+    )
+  }
+}
+
+class FilmDetail extends Component {
+  constructor() {
+    super()
+    this.state = {
+      info: ''
+    }
+    bus.subscribe((val) => {
+      this.setState({info: val})
+    })
+  }
+  render() {
+    return (
+      <div style={{position: 'fixed', top: '20px', left: '300px'}}>{this.state.info}</div>
+    )
+  }
+}
+```
+
+### context状态树传参
+```js
+import React, { Component } from 'react'
+import axios from 'axios'
+
+var GlobalContext = React.createContext()
+export default class APP extends Component {
+  state = {
+    filmList: [],
+    info: ''
+  }
+  componentDidMount() {
+    axios.get('/hot.json').then(res => {
+      this.setState({filmList: res.data})
+    })
+  }
+  render() {
+    return (
+      <GlobalContext.Provider value={{info: this.state.info, changeInfo: (val) => {
+        this.setState({info: val})
+      }}}>
+        <div>
+          {this.state.filmList.map(item => 
+            <FilmItem {...item} key={item.id} />
+          )}
+          <FilmDetail />
+        </div>
+      </GlobalContext.Provider>
+    )
+  }
+}
+
+class FilmItem extends Component {
+  render() {
+    const {nm, img, videoName} = this.props
+    return (
+      <GlobalContext.Consumer>
+        {
+          (value) => (
+            <div>
+              <h4 onClick={() => {
+                value.changeInfo(videoName)
+                }}>{nm}
+              </h4>
+              <img src={img} alt={nm} width={200} height={200}/>
+            </div>
+          )
+        }
+      </GlobalContext.Consumer>
+      
+    )
+  }
+}
+
+class FilmDetail extends Component {
+
+  render() {
+    return (
+      <GlobalContext.Consumer>
+        {
+          (value) => (
+            <div style={{position: 'fixed', top: '20px', left: '300px'}}>{value.info}</div>
+          )
+        }
+      </GlobalContext.Consumer>
+      
+    )
+  }
+}
+
+```
+
+::: tip
+GlobalContext.Consumer内必须是回调函数，通过context方法改变根组件状态
+:::
+> 缺点：react组件树中某个上级组件shouldComponetUpdate 返回false,当context更新时，不会引起下级组件更新
