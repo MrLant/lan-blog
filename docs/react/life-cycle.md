@@ -3,12 +3,33 @@ title: react生命周期
 date: 2023/04/10
 ---
 
+## 初始化阶段
+
+* componentWillMount render之前最后一次修改状态的机会
+* render 只能访问this.props和this.state，不允许修改状态和DOM输出
+* componentDidMount 成功render并渲染完成真实DOM之后触发，可以修改DOM
+
+## 运行中阶段
+
+* componentWillReceiveProps 父组件修改属性触发
+* shouldComponentUpdate 返回false会阻止render调用
+* componentWillUpdate 不能修改属性和状态
+* render 只能访问this.props和this.state，不允许修改状态和DOM输出
+* componentDidUpdate 可以修改DOM
+
+## 销毁阶段
+* componentWillUnmount 在删除组件之前进行清理操作，比如计时器和事件监听器
+
+## 老生命周期的问题
+
+1. componentWillMount ,在ssr中这个方法将会被多次调用，所以会重复触发多遍，同时在这里如果绑定事件，将无法解绑，导致内存泄漏，变得不够安全高效逐步废弃。
+2. componentWillReceiveProps 外部组件多次频繁更新传入多次不同的 props，会导致不必要的异步请求。
+3. componetWillupdate, 更新前记录 DOM 状态,  可能会做一些处理，与componentDidUpdate相隔时间如果过长，会导致状态不太信。
 
 
 
 
-
-## scu优化案例
+## shouldComponentUpdate优化案例
 ```js
 import React, { Component } from 'react'
 class Box extends Component {
@@ -54,5 +75,49 @@ export default class App extends Component {
       </div>
     )
   }
+}
+```
+
+## componentWillReceiveProps（废弃）
+```js
+import React, { Component } from 'react'
+class Child extends Component{
+    state = {
+        title:""
+    }
+    render() {
+        return <div>child-{this.state.title}</div>
+    }
+    componentWillReceiveProps(nextProps){
+        console.log("componentWillReceiveProps",nextProps)
+
+        // 最先获得父组件传来的属性， 可以利用属性进行ajax或者逻辑处理。
+        // 把属性转化成孩子自己的状态。
+
+        this.setState({
+            title:nextProps.text+"kerwin"
+        })
+    }
+}
+
+export default class App extends Component {
+    state = {
+        text:"11111111111"
+    }
+    render() {
+        return (
+            <div>
+                {
+                    this.state.text
+                }
+                <button onClick={()=>{
+                    this.setState({
+                        text:"222222222222"
+                    })
+                }}>click</button>
+                <Child text={this.state.text}/>
+            </div>
+        )
+    }
 }
 ```
