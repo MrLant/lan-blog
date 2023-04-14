@@ -25,10 +25,6 @@ date: 2023/04/10
 1. componentWillMount ,在ssr中这个方法将会被多次调用，所以会重复触发多遍，同时在这里如果绑定事件，将无法解绑，导致内存泄漏，变得不够安全高效逐步废弃。
 2. componentWillReceiveProps 外部组件多次频繁更新传入多次不同的 props，会导致不必要的异步请求。
 3. componetWillupdate, 更新前记录 DOM 状态,  可能会做一些处理，与componentDidUpdate相隔时间如果过长，会导致状态不太信。
-
-
-
-
 ## shouldComponentUpdate优化案例
 ```js
 import React, { Component } from 'react'
@@ -121,3 +117,61 @@ export default class App extends Component {
     }
 }
 ```
+## 新生命周期的替代
+getDerivedStateFromProps 第一次的初始化组件以及后续的更新过程中(包括自身状态更新以及父传子) ，
+返回一个对象作为新的state，返回null则说明不需要在这里更新state
+
+
+getSnapshotBeforeUpdate 取代了 componetWillUpdate ,触发时间为update发生的时候，在render之后
+dom渲染之前返回一个值，作为componentDidUpdate的第三个参数。
+
+```js
+import React, { Component } from 'react'
+export default class App extends Component {
+  state = {
+    list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  }
+  myRef = React.createRef()
+  getSnapshotBeforeUpdate() {
+    return this.myRef.current.scrollHeight
+  }
+  componentDidUpdate(prevProps, prevState, value) {
+    this.myRef.current.scrollTop = this.myRef.current.scrollTop + (this.myRef.current.scrollHeight - value) 
+  }
+  render() {
+    return (
+      <div>
+        <button
+          onClick={() => {
+            this.setState({ list: [...[11, 12, 13, 14, 15, 16], ...this.state.list] })
+          }}
+        >
+          click
+        </button>
+        <div style={{ height: '200px', overflow: 'auto' }} ref={this.myRef}>
+          {this.state.list.map((item) => (
+            <div key={item} style={{ height: '100px', background: '#ff0' }}>
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+}
+```
+
+## react中性能优化的方案
+1. shouldComponentUpdate
+   
+控制组件自身或者子组件是否需要更新，尤其在子组件非常多的情况下， 需要进行优化。
+
+2. PureComponent
+   
+PureComponent会帮你 比较新props 跟 旧的props， 新的state和老的state（值相等,或者
+对象含有相同的属性、且属性值相等 ），决定shouldcomponentUpdate 返回true 或者
+false， 从而决定要不要呼叫 render function
+
+::: tip
+如果你的 state 或 props 『永远都会变』，那 PureComponent 并不会比较快，因为shallowEqual 也需要花时间。
+:::

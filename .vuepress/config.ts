@@ -18,7 +18,7 @@ export default defineUserConfig({
     // series 为原 sidebar
     series: {
       "/docs/react/": [
-        'base', 'jsx', 'component', 'state-props',  'control-uncontrol', 'communication', 'solt', 'life-cycle'
+        'base', 'jsx', 'component', 'state-props',  'control-uncontrol', 'communication', 'solt', 'life-cycle', 'hooks'
     ],
     },
     navbar: [
