@@ -32,5 +32,5 @@ export default class App extends Component {
   }
 }
 ```
-> 1. 为了复用 
-> 2. 一定程度减少了父子通信
+
+>1. 为了复用2. 一定程度减少了父子通信
