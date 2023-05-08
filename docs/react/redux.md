@@ -175,3 +175,29 @@ const mapDispatchToProps = {
 }
 export default myConnect(mapStateToProps, mapDispatchToProps)(NotFound)
 ```
+
+## redux-persist
+
+```js
+import { legacy_createStore, combineReducers } from 'redux'
+import CityReducer from './reducer/CityReducer'
+import CinemaReducer from './reducer/CinemaReducer'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+const reducer = combineReducers({ CityReducer, CinemaReducer })
+const persistConfig = {
+  key: 'hello',
+  storage,
+  whitelist: ['CityReducer']
+}
+const persistedReducer = persistReducer(persistConfig, reducer)
+const store = legacy_createStore(persistedReducer)
+const persistor = persistStore(store)
+
+export { store, persistor }
+
+// index.js
+<PersistGate persistor={persistor}>
+  <App />
+</PersistGate>
+```
