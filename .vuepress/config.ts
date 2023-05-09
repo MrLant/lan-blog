@@ -1,34 +1,48 @@
-import { defineUserConfig } from "vuepress";
-import recoTheme from "vuepress-theme-reco";
+import { defineUserConfig } from 'vuepress'
+import recoTheme from 'vuepress-theme-reco'
 
 export default defineUserConfig({
-  title: "lan blog",
-  description: "Personal Learning Blog",
+  title: 'lan blog',
+  description: 'Personal Learning Blog',
   base: '/lan-blog/',
-  head: [['link', { rel: 'shortcut icon', type: "image/x-icon", href: `/lan-blog/favicon.ico` }]],
+  head: [['link', { rel: 'shortcut icon', type: 'image/x-icon', href: `/lan-blog/favicon.ico` }]],
   theme: recoTheme({
-    style: "@vuepress-reco/style-default",
-    logo: "/logo.png",
-    author: "lan",
-    authorAvatar: "/head.png",
-    docsRepo: "https://github.com/MrLant/lan-blog.git",
-    docsBranch: "main",
-    docsDir: "example",
-    lastUpdatedText: "",
+    style: '@vuepress-reco/style-default',
+    logo: '/logo.png',
+    author: 'lan',
+    authorAvatar: '/head.png',
+    docsRepo: 'https://github.com/MrLant/lan-blog.git',
+    docsBranch: 'main',
+    docsDir: 'example',
+    lastUpdatedText: '',
     // series 为原 sidebar
     series: {
-      "/docs/react/": [
-        'base', 'jsx', 'component', 'state-props',  'control-uncontrol', 'communication', 'solt', 'life-cycle', 'hooks', 'router', 'redux'
-    ],
+      '/docs/react/': [
+        'base',
+        'jsx',
+        'component',
+        'state-props',
+        'control-uncontrol',
+        'communication',
+        'solt',
+        'life-cycle',
+        'hooks',
+        'router',
+        'redux',
+        'immutable',
+        'mobx'
+      ]
     },
     navbar: [
-      { text: "Home", link: "/" },
+      { text: 'Home', link: '/' },
       {
-        text: "前端框架学习",
-        children: [
-          { text: "react", link: "/docs/react/base" },
-        ],
+        text: '前端框架学习',
+        children: [{ text: 'react', link: '/docs/react/base' }]
       },
+      {
+        text: '工作中总结',
+        link: '/docs/work/summary'
+      }
     ]
     // valineConfig 配置与 1.x 一致
     // valineConfig: {
@@ -40,6 +54,6 @@ export default defineUserConfig({
     //   recordIP: true,
     //   // hideComments: true // 隐藏评论
     // },
-  }),
+  })
   // debug: true,
-});
+})
