@@ -27,17 +27,26 @@ export default defineUserConfig({
         'solt',
         'life-cycle',
         'hooks',
-        'router',
+        'routerV5',
+        'routerV6',
         'redux',
         'immutable',
-        'mobx'
-      ]
+        'mobx',
+        'styled-components',
+        'react-saga',
+        'react-supplement',
+        'dvaJs'
+      ],
+      '/docs/nest/': ['introduce', 'ioc-di']
     },
     navbar: [
       { text: 'Home', link: '/' },
       {
         text: '前端框架学习',
-        children: [{ text: 'react', link: '/docs/react/base' }]
+        children: [
+          { text: 'react', link: '/docs/react/base' },
+          { text: 'nest', link: '/docs/nest/introduce' }
+        ]
       },
       {
         text: '工作中总结',
