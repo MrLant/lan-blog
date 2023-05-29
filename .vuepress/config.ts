@@ -1,6 +1,8 @@
 import { defineUserConfig } from 'vuepress'
 import recoTheme from 'vuepress-theme-reco'
-
+import reactPages from '../docs/react/pages'
+import nestPages from '../docs/nest/pages'
+console.log(nestPages)
 export default defineUserConfig({
   title: 'lan blog',
   description: 'Personal Learning Blog',
@@ -17,27 +19,8 @@ export default defineUserConfig({
     lastUpdatedText: '',
     // series 为原 sidebar
     series: {
-      '/docs/react/': [
-        'base',
-        'jsx',
-        'component',
-        'state-props',
-        'control-uncontrol',
-        'communication',
-        'solt',
-        'life-cycle',
-        'hooks',
-        'routerV5',
-        'routerV6',
-        'redux',
-        'immutable',
-        'mobx',
-        'styled-components',
-        'react-saga',
-        'react-supplement',
-        'dvaJs'
-      ],
-      '/docs/nest/': ['introduce', 'ioc-di']
+      ...reactPages,
+      ...nestPages
     },
     navbar: [
       { text: 'Home', link: '/' },
