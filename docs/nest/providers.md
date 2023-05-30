@@ -1,5 +1,5 @@
 ---
-title: nestjs 提供者
+title: 提供者
 date: 2023/05/29
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: nestjs 控制器
+title: 控制器
 date: 2023/05/29
 ---
 

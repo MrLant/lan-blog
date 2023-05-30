@@ -2,7 +2,6 @@ import { defineUserConfig } from 'vuepress'
 import recoTheme from 'vuepress-theme-reco'
 import reactPages from '../docs/react/pages'
 import nestPages from '../docs/nest/pages'
-console.log(nestPages)
 export default defineUserConfig({
   title: 'lan blog',
   description: 'Personal Learning Blog',
