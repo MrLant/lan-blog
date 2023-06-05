@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-00c72610","path":"/docs/nest/guard.html","title":"守卫","lang":"en-US","frontmatter":{"title":"守卫","date":"2023/05/30"},"headers":[],"git":{"createdTime":1685440473000,"updatedTime":1685440473000,"contributors":[{"name":"lanwei","email":"lanwei@bangkebang.cn","commits":1}]},"filePathRelative":"docs/nest/guard.md"}');export{e as data};

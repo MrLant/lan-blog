@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-35758a8a","path":"/docs/react/solt.html","title":"插槽","lang":"en-US","frontmatter":{"title":"插槽","date":"2023/04/10"},"headers":[],"git":{"createdTime":1681121244000,"updatedTime":1681985810000,"contributors":[{"name":"lanwei","email":"lanwei@bangkebang.cn","commits":2}]},"filePathRelative":"docs/react/solt.md"}');export{e as data};
